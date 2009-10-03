@@ -23,6 +23,8 @@ class Search
     attr_accessor :excludeDirectoryStrings
     # Array of Match objects holding the results of the search
     attr_reader :matches
+    # Indicates whether the search should be case sensitive
+    attr_accessor :caseSensitive
 
     def initialize()
         @matches = Array.new
@@ -33,6 +35,8 @@ class Search
         @currentLine = ""
         @currentLineNumber = 0
         @currentFile = ""
+
+        @caseSensitive = false
     end
 
     # Perform the search using the parameters set up.
@@ -56,7 +60,13 @@ class Search
     # Searches each line passed in for a match
     def searchLine(line)
         searchStrings.each do |search|
-            if line.include? search
+            if @caseSensitive
+                rx = Regexp.new(search)
+            else
+                rx = Regexp.new(search, Regexp::IGNORECASE)
+            end
+
+            if rx.match(line)
                 newMatch = Match.new(search, line, @currentLineNumber, @currentFile)
                 @matches << newMatch
             end
