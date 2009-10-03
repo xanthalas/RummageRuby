@@ -23,7 +23,7 @@ class TestSearch < Test::Unit::TestCase
         # No folders or search string specified
         assert_raise(RuntimeError)  { sc.search }
 
-        sc.searchFolders = ['/home/mike/code/rummage/testdata']
+        sc.searchFolders = ['./testdata']
         # No search string specified
         assert_raise(RuntimeError)  { sc.search }
 
@@ -35,7 +35,7 @@ class TestSearch < Test::Unit::TestCase
 
     def testSearchProper
         s = Search.new
-        s.searchFolders =  ['/home/mike/code/rummage/testdata']
+        s.searchFolders =  ['./testdata']
         s.searchStrings = ['hew', 'brown']
         s.search
         assert_equal(2, s.matches.count)
