@@ -10,6 +10,7 @@
 ################################################################################
 
 require 'find'
+require 'match'
 
 class Search
 
@@ -27,16 +28,16 @@ class Search
     attr_accessor :caseSensitive
 
     def initialize()
+        @excludeFileStrings = Array.new
+        @excludeDirectoryStrings = Array.new
         @matches = Array.new
+        @caseSensitive = false
 
         # Initialise the four instance variables which hold the current search
-        # search context
         @currentSearchTerm = ""
         @currentLine = ""
         @currentLineNumber = 0
         @currentFile = ""
-
-        @caseSensitive = false
     end
 
     # Perform the search using the parameters set up.
@@ -78,16 +79,33 @@ class Search
         
         Find.find(folder) do |path| 
             if FileTest.directory?(path)        #If it's a directory then don't try and search it
-                next
-            end
-            @currentFile = path     #Store the file currently being searched
-            @currentLineNumber = 0
+                if @excludeDirectoryStrings.count > 0
+                    @excludeDirectoryStrings.each do |filter|
+                        rx = Regexp.new(filter, Regexp::IGNORECASE)
 
-            file = File.open(path, "r") do |contents|
-                while line = contents.gets:
-                    @currentLineNumber = @currentLineNumber + 1
-                    searchLine(line)
+                        if rx.match(path)
+                            Find.prune()
+                        else
+                            next
+                        end
+                    end
+                else
+                    next
                 end
+            end
+            if !(FileTest.directory?(path))
+                @currentFile = path     #Store the file currently being searched
+                @currentLineNumber = 0
+                begin
+                    file = File.open(path, "r") do |contents|
+                        while line = contents.gets:
+                            @currentLineNumber = @currentLineNumber + 1
+                            searchLine(line)
+                        end
+                    end
+                rescue
+                    puts "Couldn't search #{path}"
+                end   #begin...rescue...end
             end
         end
     end
