@@ -10,12 +10,14 @@
 #            : Initial version                                                 #
 ################################################################################
 require 'search'
+require 'searchRequest'
 require 'test/unit'
 
 class TestSearch < Test::Unit::TestCase
 
     def testSearchWithErrors
         sc = Search.new
+        sr = SearchRequest.new
 
         # Test that there are no matches yet
         assert_equal(0, sc.matches.length)
@@ -23,11 +25,12 @@ class TestSearch < Test::Unit::TestCase
         # No folders or search string specified
         assert_raise(RuntimeError)  { sc.search }
 
-        sc.searchFolders = ['./testdata']
+        sr.searchFolders = ['./testdata']
         # No search string specified
         assert_raise(RuntimeError)  { sc.search }
 
-        sc.searchStrings= ['ruby', 'xanthalas' ]
+        sr.searchStrings= ['ruby', 'xanthalas' ]
+        sc.searchRequest = sr
         # Folders and string specified - no error
         assert_nothing_thrown() { sc.search }
         
@@ -36,9 +39,11 @@ class TestSearch < Test::Unit::TestCase
     # Test that case sensitive matching works
     def testSearchCaseSensitive
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['hew', 'brown']
-        s.caseSensitive = true
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['hew', 'brown']
+        sr.caseSensitive = true
+        s.searchRequest = sr
         s.search
         assert_equal(3, s.matches.length)
     end
@@ -46,9 +51,11 @@ class TestSearch < Test::Unit::TestCase
     # Test that case insensitive matching works
     def testSearchCaseInsensitive
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['hew', 'brown']
-        s.caseSensitive = false
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['hew', 'brown']
+        sr.caseSensitive = false
+        s.searchRequest = sr
         s.search
         assert_equal(4, s.matches.length)
     end
@@ -56,9 +63,11 @@ class TestSearch < Test::Unit::TestCase
     # Test that searching defaults to case insensitive
     def testSearchCaseInsensitiveDefault
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['blue', 'ORAnge', 'GREEN']
-        s.caseSensitive = false
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['blue', 'ORAnge', 'GREEN']
+        sr.caseSensitive = false
+        s.searchRequest = sr
         s.search
         assert_equal(3, s.matches.length)
     end
@@ -66,9 +75,11 @@ class TestSearch < Test::Unit::TestCase
     # Test that the results from the search - line number and file are what we expect
     def testSearchResults
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['red', 'purple', 'brown',  'dung']
-        s.caseSensitive = false
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['red', 'purple', 'brown',  'dung']
+        sr.caseSensitive = false
+        s.searchRequest = sr
         s.search
         assert_equal(6, s.matches.length)
         assert_equal("What's brown and sounds like a bell?\n", s.matches[0].matchLine)
@@ -88,9 +99,11 @@ class TestSearch < Test::Unit::TestCase
     # Test that no matches is handled correctly
     def testSearchNoMatches
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['tigers']
-        s.caseSensitive = false
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['tigers']
+        sr.caseSensitive = false
+        s.searchRequest = sr
         s.search
         assert_equal(0, s.matches.length)
     end
@@ -98,16 +111,20 @@ class TestSearch < Test::Unit::TestCase
     # Test that regular expression string matching works
     def testSearchRegularExpressions
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['o.*nge']
-        s.caseSensitive = false
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['o.*nge']
+        sr.caseSensitive = false
+        s.searchRequest = sr
         s.search
         assert_equal(1, s.matches.length)
         assert_equal("Now we have OranGe in mixed case in seventh\n", s.matches[0].matchLine)
 
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['^n']
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['^n']
+        s.searchRequest = sr
         s.search
 #s.matches.each {|match| puts match.matchLine}
         assert_equal(2, s.matches.length)
@@ -115,16 +132,20 @@ class TestSearch < Test::Unit::TestCase
 
         # Now test that case-sensitive regex matching works
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['^n']
-        s.caseSensitive = true
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['^n']
+        sr.caseSensitive = true
+        s.searchRequest = sr
         s.search
         assert_equal(0, s.matches.length)
 
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['^Wh']
-        s.caseSensitive = true
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['^Wh']
+        sr.caseSensitive = true
+        s.searchRequest = sr
         s.search
         assert_equal(1, s.matches.length)
         assert_equal("What's brown and sounds like a bell?\n", s.matches[0].matchLine)
@@ -133,10 +154,12 @@ class TestSearch < Test::Unit::TestCase
     # Test that directory exclude strings are used correctly
     def testSearchDirectoryExclude
         s = Search.new
-        s.searchFolders =  ['./testdata']
-        s.searchStrings = ['brown']
-        s.excludeDirectoryStrings = ['sub']
-        s.caseSensitive = false
+        sr = SearchRequest.new
+        sr.searchFolders =  ['./testdata']
+        sr.searchStrings = ['brown']
+        sr.excludeDirectoryStrings = ['sub']
+        sr.caseSensitive = false
+        s.searchRequest = sr
         s.search
         assert_equal(2, s.matches.length)
     end
