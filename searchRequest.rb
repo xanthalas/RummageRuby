@@ -22,10 +22,13 @@ class SearchRequest
     attr_accessor :excludeDirectoryStrings
     # Indicates whether the search should be case sensitive
     attr_accessor :caseSensitive
+    # Indicates whether to seach hidden files and folders
+    attr_accessor :searchHidden
 
     def initialize()
         @excludeFileStrings = Array.new
         @excludeDirectoryStrings = Array.new
         @caseSensitive = false
+        @searchHidden = false
     end
 end
