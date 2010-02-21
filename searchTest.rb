@@ -74,6 +74,7 @@ class TestSearch < Test::Unit::TestCase
 
     # Test that the results from the search - line number and file are what we expect
     def testSearchResults
+    puts "Start here"
         s = Search.new
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']

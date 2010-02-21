@@ -73,8 +73,9 @@ class Search
     def searchFolder(folder)
         
         Find.find(folder) do |path| 
+            baseFileName = File.basename(path)
             if FileTest.directory?(path)        #If it's a directory then don't try and search it
-                Find.prune() if path.slice(0,1) == "." && path != "." && searchRequest.searchHidden == false
+                Find.prune() if baseFileName.slice(0,1) == "." && baseFileName != "." && searchRequest.searchHidden == false
                 if searchRequest.excludeDirectoryStrings.length > 0
                     searchRequest.excludeDirectoryStrings.each do |filter|
                         rx = Regexp.new(filter, Regexp::IGNORECASE)
@@ -94,11 +95,11 @@ class Search
                 @currentLineNumber = 0
                 baseFileName = File.basename(path)
                 if baseFileName.slice(0,1) == "." && baseFileName.slice(0,2) != "./" && searchRequest.searchHidden == false
-                    puts "Skipping hidden file #{baseFileName} in path #{path}"
+#puts "Skipping hidden file #{baseFileName} in path #{path}"
                     next
                 end
                 begin
-                    puts "Searching file #{baseFileName} in path #{path}"
+#puts "Searching file #{baseFileName} in path #{path}"
                     file = File.open(path, "r") do |contents|
                         while line = contents.gets:
                             @currentLineNumber = @currentLineNumber + 1
