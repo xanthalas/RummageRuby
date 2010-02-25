@@ -16,6 +16,8 @@ class SearchRequest
     attr_accessor :searchFolders
     # Array of strings to search for
     attr_accessor :searchStrings
+    # Array of strings used to match against filenames to include those files
+    attr_accessor :includeFileStrings
     # Array of strings used to match against filenames to exclude those files
     attr_accessor :excludeFileStrings
     # Array of strings used to match against directory names to exclude those directories
@@ -26,6 +28,7 @@ class SearchRequest
     attr_accessor :searchHidden
 
     def initialize()
+        @includeFileStrings = Array.new
         @excludeFileStrings = Array.new
         @excludeDirectoryStrings = Array.new
         @caseSensitive = false

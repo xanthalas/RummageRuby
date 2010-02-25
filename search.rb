@@ -98,8 +98,13 @@ class Search
 #puts "Skipping hidden file #{baseFileName} in path #{path}"
                     next
                 end
+                if isMatchingInclude(baseFileName)
+#puts "Including file #{baseFileName} due to matching includeFilename parameter"
+                else
+                	next
+                end
                 if isMatchingExclude(baseFileName)
-                	puts "Excluding file #{baseFileName} due to matching excludeFilename parameter"
+#                	puts "Excluding file #{baseFileName} due to matching excludeFilename parameter"
                 	next
                 end
 
@@ -128,5 +133,19 @@ class Search
     	end
     	
     	return false
+    end
+
+    def isMatchingInclude(filename)
+    	if searchRequest.includeFileStrings.length > 0 
+    		searchRequest.includeFileStrings.each do |filter|
+    			rx = Regexp.new(filter, Regexp::IGNORECASE)
+
+    			return true if rx.match(filename)
+            end
+
+            return false
+    	end
+    	
+    	return true
     end
 end
