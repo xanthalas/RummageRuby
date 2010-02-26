@@ -42,6 +42,8 @@ class SearchRequest
             when 'off', 'false', 'no', 'n', 0
                 @caseSensitive = false
             end
+        else
+            @caseSensitive = value
         end
     end
 end
