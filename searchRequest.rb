@@ -35,11 +35,13 @@ class SearchRequest
     
     #Sets the case-sensitive option based on the value passed in.
     def setCaseSensitive(value)
-    	case value.downcase
-    	when 'on', 'true', 'yes', 'y', '1'
-    		@caseSensitive = true
-    	when 'off', 'false', 'no', 'n', 0
-    		@caseSensitive = false
-    	end
+        if value != false && value != true
+            case value.downcase
+            when 'on', 'true', 'yes', 'y', '1'
+                @caseSensitive = true
+            when 'off', 'false', 'no', 'n', 0
+                @caseSensitive = false
+            end
+        end
     end
 end
