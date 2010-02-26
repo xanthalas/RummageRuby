@@ -10,7 +10,7 @@
 ################################################################################
 
 require 'find'
-require 'match'
+require File.expand_path("../match", __FILE__)
 
 class Search
 
@@ -99,7 +99,7 @@ class Search
                     next
                 end
                 if isMatchingExclude(baseFileName)
-                	puts "Excluding file #{baseFileName} due to matching excludeFilename parameter"
+#                	puts "Excluding file #{baseFileName} due to matching excludeFilename parameter"
                 	next
                 end
 

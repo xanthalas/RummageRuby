@@ -10,9 +10,10 @@
 #            : Initial version                                                 #
 ################################################################################
 
-require 'search'
-require 'searchRequest'
-require 'match'
+require File.expand_path("../search", __FILE__)
+require File.expand_path("../searchRequest", __FILE__)
+require File.expand_path("../match", __FILE__)
+
 searchStrings = Array.new
 searchFolders = Array.new
 excludeFileStrings = Array.new
