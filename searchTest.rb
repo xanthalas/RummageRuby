@@ -1,18 +1,17 @@
-#! /usr/bin/ruby
-################################################################################
-# System     : rummage                                                         #
-# File       : searchTest.rb                                                   #
-# Author     : Xanthalas                                                       #
-# Description: Unit test class for testing the Search class.                   #
-#                                                                              #
-# -----------: Change Log ---------------------------------------------------- #
-# Date       : September 2009                          Author: Xanthalas       #
-#            : Initial version                                                 #
-################################################################################
 require 'search'
 require 'searchRequest'
 require 'test/unit'
 
+=begin rdoc
+* System     : rummage
+* Author     : Xanthalas
+* Description: Unit test class for testing the Search class.
+
+ -----------: Change Log ----------------------------------------------------
+ Date       : September 2009                             Author: Xanthalas
+            : Initial version
+
+=end
 class TestSearch < Test::Unit::TestCase
 
     def testSearchWithErrors

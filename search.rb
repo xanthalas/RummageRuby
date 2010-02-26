@@ -1,19 +1,17 @@
-################################################################################
-# System     : rummage                                                         #
-# File       : search.rb                                                       #
-# Author     : Xanthalas                                                       #
-# Description: This class performs the search.                                 #
-#                                                                              #
-# -----------: Change Log ---------------------------------------------------- #
-# Date       : September 2009                          Author: Xanthalas       #
-#            : Initial version                                                 #
-################################################################################
-
 require 'find'
 require File.expand_path("../match", __FILE__)
 
-class Search
+=begin rdoc
+* System     : rummage
+* Author     : Xanthalas
+* Description: Performs the search.
 
+ -----------: Change Log ----------------------------------------------------
+ Date       : September 2009                           Author: Xanthalas
+            : Initial version
+
+=end
+class Search
 
     # Search Request to action.
     attr_accessor :searchRequest
@@ -123,6 +121,7 @@ class Search
         end
     end
 
+    #Determine if the filename matches any of the regular expressions in the exclude list
     def isMatchingExclude(filename)
     	if searchRequest.excludeFileStrings.length > 0 
     		searchRequest.excludeFileStrings.each do |filter|
@@ -135,6 +134,7 @@ class Search
     	return false
     end
 
+    #Determine if the filename matches any of the regular expressions in the include list
     def isMatchingInclude(filename)
     	if searchRequest.includeFileStrings.length > 0 
     		searchRequest.includeFileStrings.each do |filter|

@@ -1,17 +1,16 @@
-#! /usr/bin/ruby
-################################################################################
-# System     : rummage                                                         #
-# File       : matchTest.rb                                                    #
-# Author     : Xanthalas                                                       #
-# Description: Unit test class for testing the Match class.                    #
-#                                                                              #
-# -----------: Change Log ---------------------------------------------------- #
-# Date       : October 2009                            Author: Xanthalas       #
-#            : Initial version                                                 #
-################################################################################
 require 'match'
 require 'test/unit'
 
+=begin rdoc
+* System     : rummage
+* Author     : Xanthalas
+* Description: Unit test class for testing the Match class.
+
+ -----------: Change Log ----------------------------------------------------
+ Date       : October 2009                             Author: Xanthalas
+            : Initial version
+
+=end
 class TestMatch < Test::Unit::TestCase
 
     def testMatch

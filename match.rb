@@ -1,14 +1,13 @@
-################################################################################
-# System     : rummage                                                         #
-# File       : match.rb                                                        #
-# Author     : Xanthalas                                                       #
-# Description: This class holds the result of a single match.                  #
-#                                                                              #
-# -----------: Change Log ---------------------------------------------------- #
-# Date       : October 2009                            Author: Xanthalas       #
-#            : Initial version                                                 #
-################################################################################
+=begin rdoc
+* System     : rummage
+* Author     : Xanthalas
+* Description: Holds the result of a single match.
 
+ -----------: Change Log ----------------------------------------------------
+ Date       : October 2009                             Author: Xanthalas
+            : Initial version
+
+=end
 class Match
 
     # String which matched
