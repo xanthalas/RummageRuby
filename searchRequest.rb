@@ -33,16 +33,12 @@ class SearchRequest
         @searchHidden = false
     end
     
-=begin
-= searchRequest.rb
-  Author: Xanthalas
-  This class encapsulates all the information required to perform a single search.
-=end
+    #Sets the case-sensitive option based on the value passed in.
     def setCaseSensitive(value)
-    	case value.
-    	when 'on', 'true', 'yes' '1'
+    	case value.downcase
+    	when 'on', 'true', 'yes', 'y', '1'
     		@caseSensitive = true
-    	when 'off', 'false', 'no', 0
+    	when 'off', 'false', 'no', 'n', 0
     		@caseSensitive = false
     	end
     end

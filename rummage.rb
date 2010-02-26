@@ -18,6 +18,7 @@ searchStrings = Array.new
 searchFolders = Array.new
 excludeFileStrings = Array.new
 includeFileStrings = Array.new
+caseSensitiveValue = false
 
 charsBeforeAndAfter = 20
 
@@ -56,7 +57,7 @@ ARGV.each {|arg|
         includeFileStrings << contents
     end
     if cmd == "c" 
-        setCaseSensitive(contents)
+        caseSensitiveValue = contents
     end
 
 }
@@ -73,6 +74,7 @@ sr.searchStrings = searchStrings
 sr.searchFolders = searchFolders
 sr.excludeFileStrings = excludeFileStrings
 sr.includeFileStrings = includeFileStrings
+sr.setCaseSensitive(caseSensitiveValue)
 sc.searchRequest = sr
 sc.search
 sc.matches.each {|match| puts "#{match.matchFile}:#{match.matchLineNumber}:#{match.matchLine}" }
