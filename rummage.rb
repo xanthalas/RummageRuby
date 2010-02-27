@@ -19,6 +19,7 @@ searchFolders = Array.new
 excludeFileStrings = Array.new
 includeFileStrings = Array.new
 caseSensitiveValue = false
+searchHidden = false
 
 charsBeforeAndAfter = 20
 
@@ -32,6 +33,7 @@ if ARGV.length == 0 || ARGV[0] == "help"
 	puts "               x=regex                     - Don't search files whose name matches this regex"
 	puts "               i=regex                     - Only search files whose name matches this regex"
 	puts "               c=on/off                    - Case-sensitive search on or off (defaults to off)"
+  puts "               h=on/off                    - Hidden search on or off (defaults to off)"
 	puts ""
 	puts "        The s, f, x and i parameters can be repeated as many times as required to"
 	puts "        pass multiple values to the search"
@@ -59,6 +61,9 @@ ARGV.each {|arg|
     if cmd == "c" 
         caseSensitiveValue = contents
     end
+    if cmd == "h" 
+        searchHidden = contents
+    end
 
 }
 
@@ -75,6 +80,7 @@ sr.searchFolders = searchFolders
 sr.excludeFileStrings = excludeFileStrings
 sr.includeFileStrings = includeFileStrings
 sr.setCaseSensitive(caseSensitiveValue)
+sr.setHiddenSearch(searchHidden)
 sc.searchRequest = sr
 sc.search
 sc.matches.each {|match| puts "#{match.matchFile}:#{match.matchLineNumber}:#{match.matchLine}" }
