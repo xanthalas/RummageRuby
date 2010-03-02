@@ -46,4 +46,18 @@ class SearchRequest
             @caseSensitive = value
         end
     end
+    
+    #Sets the search-hidden option based on the value passed in.
+    def setHiddenSearch(value)
+        if value != false && value != true
+            case value.downcase
+            when 'on', 'true', 'yes', 'y', '1'
+                @searchHidden = true
+            when 'off', 'false', 'no', 'n', 0
+                @searchHidden = false
+            end
+        else
+            @searchHidden = value
+        end
+    end
 end
