@@ -92,6 +92,10 @@ class Search
                 @currentFile = path     #Store the file currently being searched
                 @currentLineNumber = 0
                 baseFileName = File.basename(path)
+                if binary?(path)
+#puts "Skipping binary file #{path}"
+                    next
+                end
                 if baseFileName.slice(0,1) == "." && baseFileName.slice(0,2) != "./" && searchRequest.searchHidden == false
 #puts "Skipping hidden file #{baseFileName} in path #{path}"
                     next
@@ -148,4 +152,11 @@ class Search
     	
     	return true
     end
+
+    #Determine if the file is binary. This is taken from the ptools gem by Daniel Berger (rubyforge.org/projects/shards).
+    def binary?(file)
+       s = (File.read(file, File.stat(file).blksize) || "").split(//)
+       ((s.size - s.grep(" ".."~").size) / s.size.to_f) > 0.30
+    end
+
 end
