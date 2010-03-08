@@ -18,11 +18,14 @@ class Match
     attr_reader :matchLineNumber
     # File in which the match was found
     attr_reader :matchFile
-
-    def initialize(match, line, lineNumber, file)
+    # Array of captures in this match
+    attr_reader :captures
+    
+    def initialize(match, line, lineNumber, file, matchingCaptures)
         @matchString = match
         @matchLine = line
         @matchLineNumber = lineNumber
         @matchFile = file
+        @captures = matchingCaptures
     end
 end

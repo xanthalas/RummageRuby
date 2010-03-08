@@ -41,7 +41,7 @@ class TestSearch < Test::Unit::TestCase
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['hew', 'brown']
-        sr.caseSensitive = true
+        sr.setCaseSensitive true
         s.searchRequest = sr
         s.search
         assert_equal(3, s.matches.length)
@@ -53,7 +53,7 @@ class TestSearch < Test::Unit::TestCase
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['hew', 'brown']
-        sr.caseSensitive = false
+        sr.setCaseSensitive false
         s.searchRequest = sr
         s.search
         assert_equal(4, s.matches.length)
@@ -65,7 +65,7 @@ class TestSearch < Test::Unit::TestCase
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['blue', 'ORAnge', 'GREEN']
-        sr.caseSensitive = false
+        sr.setCaseSensitive false
         s.searchRequest = sr
         s.search
         assert_equal(3, s.matches.length)
@@ -73,12 +73,11 @@ class TestSearch < Test::Unit::TestCase
 
     # Test that the results from the search - line number and file are what we expect
     def testSearchResults
-    puts "Start here"
         s = Search.new
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['red', 'purple', 'brown',  'dung']
-        sr.caseSensitive = false
+        sr.setCaseSensitive false
         s.searchRequest = sr
         s.search
         assert_equal(6, s.matches.length)
@@ -102,7 +101,7 @@ class TestSearch < Test::Unit::TestCase
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['tigers']
-        sr.caseSensitive = false
+        sr.setCaseSensitive false
         s.searchRequest = sr
         s.search
         assert_equal(0, s.matches.length)
@@ -114,7 +113,7 @@ class TestSearch < Test::Unit::TestCase
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['o.*nge']
-        sr.caseSensitive = false
+        sr.setCaseSensitive false
         s.searchRequest = sr
         s.search
         assert_equal(1, s.matches.length)
@@ -135,7 +134,7 @@ class TestSearch < Test::Unit::TestCase
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['^n']
-        sr.caseSensitive = true
+        sr.setCaseSensitive true
         s.searchRequest = sr
         s.search
         assert_equal(0, s.matches.length)
@@ -144,7 +143,7 @@ class TestSearch < Test::Unit::TestCase
         sr = SearchRequest.new
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['^Wh']
-        sr.caseSensitive = true
+        sr.setCaseSensitive true
         s.searchRequest = sr
         s.search
         assert_equal(1, s.matches.length)
@@ -158,7 +157,7 @@ class TestSearch < Test::Unit::TestCase
         sr.searchFolders =  ['./testdata']
         sr.searchStrings = ['brown']
         sr.excludeDirectoryStrings = ['sub']
-        sr.caseSensitive = false
+        sr.setCaseSensitive false
         s.searchRequest = sr
         s.search
         assert_equal(2, s.matches.length)

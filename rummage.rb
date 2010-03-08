@@ -83,7 +83,10 @@ sr.setCaseSensitive(caseSensitiveValue)
 sr.setHiddenSearch(searchHidden)
 sc.searchRequest = sr
 sc.search
-sc.matches.each {|match| puts "#{match.matchFile}:#{match.matchLineNumber}:#{match.matchLine}" }
+sc.matches.each {|match| 
+  puts "#{match.matchFile}:#{match.matchLineNumber}:#{match.matchLine}" 
+#  match.captures.each {|capture| puts "Capture = #{capture}"}
+}
 
 puts ""
 puts "Found #{sc.matches.length} matches"

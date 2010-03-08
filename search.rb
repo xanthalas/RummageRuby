@@ -60,8 +60,8 @@ class Search
                 rx = Regexp.new(search, Regexp::IGNORECASE)
             end
 
-            if rx.match(line)
-                newMatch = Match.new(search, line, @currentLineNumber, @currentFile)
+            if matchData = rx.match(line)
+                newMatch = Match.new(search, line, @currentLineNumber, @currentFile, matchData.captures)
                 @matches << newMatch
             end
         end
@@ -90,28 +90,23 @@ class Search
             end
             if !(FileTest.directory?(path))
                 @currentFile = path     #Store the file currently being searched
-                @currentLineNumber = 0
                 baseFileName = File.basename(path)
                 if binary?(path)
-#puts "Skipping binary file #{path}"
                     next
                 end
                 if baseFileName.slice(0,1) == "." && baseFileName.slice(0,2) != "./" && searchRequest.searchHidden == false
-#puts "Skipping hidden file #{baseFileName} in path #{path}"
                     next
                 end
                 if isMatchingInclude(baseFileName)
-#puts "Including file #{baseFileName} due to matching includeFilename parameter"
                 else
                 	next
                 end
                 if isMatchingExclude(baseFileName)
-#                	puts "Excluding file #{baseFileName} due to matching excludeFilename parameter"
                 	next
                 end
 
                 begin
-#puts "Searching file #{baseFileName} in path #{path}"
+                    @currentLineNumber = 0
                     file = File.open(path, "r") do |contents|
                         while line = contents.gets:
                             @currentLineNumber = @currentLineNumber + 1
@@ -119,7 +114,7 @@ class Search
                         end
                     end
                 rescue
-                    puts "Couldn't search #{path}"
+                    puts "Couldn't search #{path}. Reason #{$!}"
                 end   #begin...rescue...end
             end
         end
