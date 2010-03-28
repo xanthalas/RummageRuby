@@ -14,12 +14,49 @@ require File.expand_path("../search", __FILE__)
 require File.expand_path("../searchRequest", __FILE__)
 require File.expand_path("../match", __FILE__)
 
+#Sets the given true/false option based on the value passed in.
+#As Ruby doesn't support passing parameters by reference this method works round it
+#using a technique suggested by "jmah" on Stackoverflow here:
+#    http://stackoverflow.com/questions/161510/pass-parameter-by-reference-in-ruby
+#Note that the caller must include a colon before the field parameter
+def setTrueFalseValue(field, value, bdg)
+    actualValue = value
+
+    if value != false && value != true
+        case value.downcase
+        when 'on', 'true', 'yes', 'y', '1'
+            actualValue = true
+        when 'off', 'false', 'no', 'n', '0'
+            actualValue = false
+        end
+    else
+        actualValue = value
+    end
+
+    eval "#{field} = #{actualValue}", bdg
+end
+
+#Returns a new array containing just the matching file names. Names are unique.
+def getNamesUnique(m)
+
+    uniqueArray = Array.new
+
+    m.each {|match| 
+        uniqueArray << match.matchFile
+    }
+
+    uniqueArray.uniq!
+
+    return uniqueArray
+end
+
 searchStrings = Array.new
 searchFolders = Array.new
 excludeFileStrings = Array.new
 includeFileStrings = Array.new
 caseSensitiveValue = false
 searchHidden = false
+nameOnly = false
 
 charsBeforeAndAfter = 20
 
@@ -33,7 +70,8 @@ if ARGV.length == 0 || ARGV[0] == "help"
 	puts "               x=regex                     - Don't search files whose name matches this regex"
 	puts "               i=regex                     - Only search files whose name matches this regex"
 	puts "               c=on/off                    - Case-sensitive search on or off (defaults to off)"
-  puts "               h=on/off                    - Hidden search on or off (defaults to off)"
+    puts "               h=on/off                    - Hidden search on or off (defaults to off)"
+	puts "               n=on/off                    - Print name of matching files only (useful for piping back into rummage)"
 	puts ""
 	puts "        The s, f, x and i parameters can be repeated as many times as required to"
 	puts "        pass multiple values to the search"
@@ -64,6 +102,9 @@ ARGV.each {|arg|
     if cmd == "h" 
         searchHidden = contents
     end
+    if cmd == "n" 
+        setTrueFalseValue(:nameOnly, contents, binding)
+    end
 
 }
 
@@ -83,10 +124,23 @@ sr.setCaseSensitive(caseSensitiveValue)
 sr.setHiddenSearch(searchHidden)
 sc.searchRequest = sr
 sc.search
-sc.matches.each {|match| 
-  puts "#{match.matchFile}:#{match.matchLineNumber}:#{match.matchLine}" 
-#  match.captures.each {|capture| puts "Capture = #{capture}"}
-}
 
-puts ""
-puts "Found #{sc.matches.length} matches"
+#Print out the results
+if nameOnly
+    
+    matchingNames = getNamesUnique(sc.matches)
+    matchingNames.each {|name|
+        puts name
+    }
+    puts ""
+    puts "Found #{sc.matches.length} matches in #{matchingNames.count} files"
+else
+
+    sc.matches.each {|match| 
+        puts "#{match.matchFile}:#{match.matchLineNumber}:#{match.matchLine}" 
+    }
+
+    puts ""
+    puts "Found #{sc.matches.length} matches"
+end
+

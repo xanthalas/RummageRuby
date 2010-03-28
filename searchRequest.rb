@@ -53,7 +53,7 @@ class SearchRequest
             case value.downcase
             when 'on', 'true', 'yes', 'y', '1'
                 @searchHidden = true
-            when 'off', 'false', 'no', 'n', 0
+            when 'off', 'false', 'no', 'n', '0'
                 @searchHidden = false
             end
         else

@@ -14,7 +14,7 @@ require 'test/unit'
 class TestMatch < Test::Unit::TestCase
 
     def testMatch
-        m = Match.new("findme", "you found findme in this line", 1, "testfile")
+        m = Match.new("findme", "you found findme in this line", 1, "testfile", nil)
 
         assert_equal("findme", m.matchString)
         assert_equal("you found findme in this line", m.matchLine)
